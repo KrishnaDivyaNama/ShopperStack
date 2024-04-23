@@ -12,6 +12,8 @@ public class TC01_Test extends BaseTest {
 
 		System.out.println("Test Case 01");
 		test.log(Status.PASS, "Test Case 01");
+		Reporter.log("Execution",true);
+	
 		test.addScreenCaptureFromPath(utility_Methods.takeScreenshot(driver), "Test Case 01");
 	}
 }

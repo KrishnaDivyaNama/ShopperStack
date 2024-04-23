@@ -6,6 +6,7 @@ import java.time.Duration;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.testng.Reporter;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -37,6 +38,7 @@ public class BaseTest implements FrameWorkConstants {
 	public static ExtentReports reports;
 	public static ExtentTest test;
 	public BasePage base_Page;
+	public LoginPage login_page;
 	public UtilityMethods utility_Methods = new UtilityMethods();
 	public DataUtility data_Utility = new DataUtility();
 
@@ -50,12 +52,18 @@ public class BaseTest implements FrameWorkConstants {
 
 	@Parameters("Browser")
 	@BeforeClass(alwaysRun = true)
-	public void launchingBrowser(@Optional("Chrome") String browser) throws IOException, InvaidBrowserNameException {
-
-		if (browser.equals("Chrome")) {
+	public void launchingBrowser(@Optional("Firefox") String browser) throws IOException, InvaidBrowserNameException, InterruptedException {
+		if (browser.equals("Firefox")) 
+		{
+			driver = new FirefoxDriver();
+			Reporter.log("Firefox Browser Launched", true);
+		}
+			else if (browser.equals("Chrome")) 
+			{
 			driver = new ChromeDriver();
 			Reporter.log("Chrome Browser Launched", true);
-		} else if (browser.equals("Edge")) {
+		} 
+			else if (browser.equals("Edge")) {
 			driver = new EdgeDriver();
 			Reporter.log("Edge Browser Launched", true);
 		}else {
@@ -66,27 +74,32 @@ public class BaseTest implements FrameWorkConstants {
 		driver.manage().window().maximize();
 		driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(implicitWait_Time));
 		driver.get(data_Utility.getDataFromProperties(url_Key));
+		Thread.sleep(3000);
 	}
 
 	@BeforeMethod(alwaysRun = true)
-	public void performingLogin(Method method) throws IOException {
+	public void performingLogin(Method method) throws IOException, InterruptedException {
 
 		test = reports.createTest(method.getName());
 		base_Page = new BasePage(driver);
 		base_Page.getLoginButton().click();
+		Thread.sleep(3000);
 		LoginPage login_Page = new LoginPage(driver);
 		login_Page.performLogin(data_Utility.getDataFromProperties(email_Key),data_Utility.getDataFromProperties(password_Key));
 		Reporter.log("Performing Login", true);
+		Thread.sleep(3000);
 	}
 
 	@AfterMethod(alwaysRun = true)
-	public void performingLogout() {
+	public void performingLogout() throws InterruptedException {
+		Thread.sleep(3000);
 		base_Page.performLogout();
 		Reporter.log("Performing Logout", true);
 	}
 
 	@AfterClass(alwaysRun = true)
-	public void closingBrowser() {
+	public void closingBrowser() throws InterruptedException {
+		Thread.sleep(3000);
 		driver.close();
 		Reporter.log("Closing Browser", true);
 	}

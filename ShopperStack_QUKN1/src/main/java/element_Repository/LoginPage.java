@@ -15,6 +15,20 @@ public class LoginPage extends BasePage{
 	@FindBy(xpath="//span[text()='Login']")
 	private WebElement loginButton;
 	
+	@FindBy(xpath="//a[@id='Forgot Password?']")
+	private WebElement forgotPassword;
+	
+	@FindBy(xpath="//button[@id='Create Account']")
+	private WebElement createAccount;
+	
+	public WebElement getCreateAccount() {
+		return createAccount;
+	}
+
+	public WebElement getForgotPassword() {
+		return forgotPassword;
+	}
+
 	public LoginPage(WebDriver driver){
 		super(driver);
 	}
@@ -38,5 +52,14 @@ public class LoginPage extends BasePage{
 		getLoginButton().click();
 	}
 	
+	public void forgotPassword()
+	{
+		getForgotPassword().click();
+	}
+	
+	public void createAccount()
+	{
+		getCreateAccount().click();
+	}
 	
 }
